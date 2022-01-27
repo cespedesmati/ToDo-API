@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import { Schema } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-const taskSchema = new Schema({
+const taskSchema = new mongoose.Schema({
     title:{
         type: String,
         minlength: 12,
@@ -20,9 +19,13 @@ const taskSchema = new Schema({
     expirationDate:{
         type: Date,
         required: [true, 'Expiration date required.']
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 
 taskSchema.plugin(uniqueValidator , {message:' already exist in DB'});
 
-export default mongoose.model('tasks',taskSchema);
+export default mongoose.model('Task',taskSchema);
