@@ -1,0 +1,1 @@
+npm install --save @types/mongoose-unique-validator 
