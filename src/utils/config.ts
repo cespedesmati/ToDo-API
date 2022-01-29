@@ -6,6 +6,7 @@ export default {
     port: process.env.PORT,
     log:{
         level:process.env.LOG_LEVEL
-    }
+    },
+    MONGODB_URI: process.env.MONGODB_URI
 };
 
