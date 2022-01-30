@@ -1,22 +1,14 @@
 import { Router } from 'express';
-import { Request, Response, NextFunction } from 'express';
-import TaskService from "../service/taskService";
-import {getTasks} from '../controllers/taskControllers';
-const taskService = new TaskService();
+import {getTasks,createTask} from '../controllers/taskControllers';
 
 const taskRouter = Router();
 
-
+//GET
 taskRouter.get('/', getTasks);
 
+//POST
+taskRouter.post('/',createTask);
 
-taskRouter.get('/s', (request: Request, response: Response, next: NextFunction) => {
-    try {
-        const tasks = taskService.findAll();
-        response.json(tasks);
-    } catch (error) {
-        next(error);
-    }
-});
+
 
 export default taskRouter;

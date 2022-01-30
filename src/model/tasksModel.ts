@@ -1,6 +1,18 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
+enum Status {
+    inProgress = 'In progress',
+    completed = 'Completed'
+}
+export interface TaskType extends mongoose.Document{
+    title:string,
+    description:string,
+    status:Status,
+    expirationDate:Date,
+    user: mongoose.Schema.Types.ObjectId
+}
+
 const taskSchema = new mongoose.Schema({
     title:{
         type: String,
@@ -28,4 +40,6 @@ const taskSchema = new mongoose.Schema({
 
 taskSchema.plugin(uniqueValidator , {message:' already exist in DB'});
 
-export default mongoose.model('Task',taskSchema);
+const Task = mongoose.model<TaskType>('Task',taskSchema);
+
+export default Task;
