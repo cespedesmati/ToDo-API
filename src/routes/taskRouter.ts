@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {getTasks,createTask} from '../controllers/taskControllers';
+import { postRequestValidations } from '../utils/validation/taskValidation';
 
 const taskRouter = Router();
 
@@ -7,7 +8,7 @@ const taskRouter = Router();
 taskRouter.get('/', getTasks);
 
 //POST
-taskRouter.post('/',createTask);
+taskRouter.post('/',postRequestValidations,createTask);
 
 
 

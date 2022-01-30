@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-import {TaskType} from '../model/tasksModel';
+import { TaskType } from '../model/tasksModel';
 import TaskService from "../service/taskService";
 import loggerInstance from '../utils/logger';
 const taskService = new TaskService();
@@ -16,7 +16,7 @@ export const getTasks: RequestHandler = async (request: Request, response: Respo
 
 export const createTask: RequestHandler = async(request: Request, response: Response, next: NextFunction) => {
     try {
-        const bodyTask = request.body as TaskType;
+        const bodyTask = <TaskType>request.body ;
         const savedTask = await taskService.saveTask(bodyTask) as TaskType;
         response.send(savedTask);
     } catch (error) {
