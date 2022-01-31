@@ -19,12 +19,12 @@ mongoose.connect(String(config.MONGODB_URI))
     .catch((error) => {
         logger.error('error connecting to MongoDB:', error);
 });
+app.use(express.json());
+app.use(morgan('tiny'));
 
 app.use('/api',pruebaRouter);
 app.use('/tasks',taskRouter);
 
-app.use(express.json());
-app.use(morgan('tiny'));
 app.use(errorHandler);
 
 

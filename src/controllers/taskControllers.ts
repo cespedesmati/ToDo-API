@@ -16,6 +16,7 @@ export const getTasks: RequestHandler = async (request: Request, response: Respo
 
 export const createTask: RequestHandler = async(request: Request, response: Response, next: NextFunction) => {
     try {
+        console.log(request.body);
         const bodyTask = <TaskType>request.body ;
         const savedTask = await taskService.saveTask(bodyTask) as TaskType;
         response.send(savedTask);

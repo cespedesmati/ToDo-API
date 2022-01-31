@@ -16,9 +16,9 @@ export interface TaskType extends mongoose.Document{
 const taskSchema = new mongoose.Schema({
     title:{
         type: String,
-        minlength: 12,
-        required: [true, 'Title required.'],
-        unique: true
+        //minlength: 12,
+        //required: [true, 'Title required.'],
+        //unique: true
     },
     description:{
         type: String

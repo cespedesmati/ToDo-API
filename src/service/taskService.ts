@@ -1,6 +1,7 @@
 import TaskRepository from "../repositories/taskRepository";
 const taskRepository = new TaskRepository();
 import { TaskType } from "../model/tasksModel";
+import { FilterQuery } from "mongoose";
 
 class TaskService{
 
@@ -10,6 +11,10 @@ class TaskService{
 
     async saveTask(task: TaskType){
         return await taskRepository.save(task);
+    }
+
+    async findTitle(title : FilterQuery<TaskType> | undefined){
+        return await taskRepository.getTitle(title);
     }
 }
 
