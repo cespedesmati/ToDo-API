@@ -11,9 +11,8 @@ const taskService = new TaskService();
     -------------------------
  */
 const _titleRequired = check('title', 'Title required.').not().isEmpty();
-//const _titleRequired = body('title', 'Title required.').exists();
 const _titleIsString = check('title', 'Title must be a string.').isString();
-const _titleIsLength = body('title', 'title size must be at least 12 characters.').isLength({min:12});
+const _titleIsLength = body('title', 'Title size must be at least 12 characters.').isLength({min:12});
 
 const _titleIsUniqueFunction : CustomValidator = async(value) => {
     const tasksDB = await taskService.findAll();
@@ -25,8 +24,36 @@ const _titleIsUniqueFunction : CustomValidator = async(value) => {
 
 const _titleIsUnique = body('title').custom(_titleIsUniqueFunction);
 
+/**
+ *  ------------------------------
+    Validaciones para description
+    ------------------------------
+ */
+const _descriptionIsString = check('description', 'Description must be a string.').optional().isString();
 
 
+/**
+ *  -------------------------
+    Validaciones para status
+    -------------------------
+ */
+const _statusIsString = check('status', 'Status must be a string.').optional().isString();
+const _statusValid = check('status','Status must be in progress or completed.').optional().toLowerCase().isIn(['in progress', 'completed']);
+
+/**
+ *  -----------------------
+    Validaciones para expirationDate
+    -----------------------
+ */
+
+const _expirationDateRequired = check('expirationDate', 'ExpirationDate required.').not().isEmpty();
+const _expirationDateIsDate = check('expirationDate', 'ExpirationDate must be a date.').isDate();
+
+/**
+ *  ----------------------------------
+    Handler para errores de validacion
+    ----------------------------------
+*/
 const _validationResult = (request: Request, response: Response, next: NextFunction) => {
     const error = validationResult(request);
     if(!error.isEmpty()){
@@ -35,11 +62,19 @@ const _validationResult = (request: Request, response: Response, next: NextFunct
     }
     next();
 };
+    
+
+
 
 export const postRequestValidations = [
     _titleRequired,
     _titleIsString,
     _titleIsLength,
     _titleIsUnique,
+    _descriptionIsString,
+    _statusIsString,
+    _statusValid,
+    _expirationDateRequired,
+    _expirationDateIsDate,
     _validationResult
 ];
