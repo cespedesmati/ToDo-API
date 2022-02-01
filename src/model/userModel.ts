@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
+export interface UserType extends mongoose.Document{
+    email:string,
+    passwordCrypt:string,
+    task:mongoose.Schema.Types.ObjectId[]
+}
+
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -21,4 +27,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.plugin(uniqueValidator , {message:' already exist in DB'});
 
-export default mongoose.model('User',userSchema);
+const User = mongoose.model<UserType>('User',userSchema);
+
+export default User;
