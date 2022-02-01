@@ -20,6 +20,10 @@ class TaskRepository{
         return await Task.findByIdAndUpdate(id,bodyTask,{new:true});
     }
 
+    async delete(id: string){
+        return await Task.findByIdAndRemove(id);
+    }
+
     async getTitle (title: FilterQuery<TaskType> | undefined){
         return await Task.findOne(title);
     }

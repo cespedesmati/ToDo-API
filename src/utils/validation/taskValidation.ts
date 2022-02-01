@@ -59,6 +59,15 @@ const _optionalExpirationDateIsDate = check('expirationDate', 'ExpirationDate mu
 */
 const _idIsMongo = check('id').optional().isMongoId().withMessage('ID does not exist in DB');
 
+// const idExistFunction : CustomValidator = async(id) => {
+//     const userFound = await taskService.findById(<string>id);
+//     if(userFound == null ) {
+//         throw new Error('ID does not exist in DB');
+//     }
+// };
+
+// const _idExist = body('id').optional().custom(idExistFunction);
+
 /**
  *  ----------------------------------
     Handler para errores de validacion
@@ -74,6 +83,10 @@ const _validationResult = (request: Request, response: Response, next: NextFunct
 };
     
 
+export const getRequestValidations = [    
+    _idIsMongo,
+    _validationResult
+];
 
 
 export const postRequestValidations = [
@@ -98,5 +111,10 @@ export const putRequestValidations = [
     _statusValid,
     _expirationDateRequired,
     _expirationDateIsDate,
+    _validationResult
+];
+
+export const deleteRequestValidations = [
+    _idIsMongo,
     _validationResult
 ];

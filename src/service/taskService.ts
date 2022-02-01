@@ -21,9 +21,15 @@ class TaskService{
         return await taskRepository.update(id,bodyTask);
     }
 
+    async deleteTask(id: string){
+        return await taskRepository.delete(id);
+    }
+
     async findTitle(title : FilterQuery<TaskType> | undefined){
         return await taskRepository.getTitle(title);
     }
+
+ 
 }
 
 
