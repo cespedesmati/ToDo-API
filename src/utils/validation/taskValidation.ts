@@ -12,7 +12,9 @@ const taskService = new TaskService();
  */
 const _titleRequired = check('title', 'Title required.').not().isEmpty();
 const _titleIsString = check('title', 'Title must be a string.').isString();
+const _optionalTitleIsString = check('title', 'Title must be a string.').optional().isString();
 const _titleIsLength = body('title', 'Title size must be at least 12 characters.').isLength({min:12});
+const _optionalTitleIsLength = body('title', 'Title size must be at least 12 characters.').optional().isLength({min:12});
 
 const _titleIsUniqueFunction : CustomValidator = async(value) => {
     const tasksDB = await taskService.findAll();
@@ -23,6 +25,7 @@ const _titleIsUniqueFunction : CustomValidator = async(value) => {
 };
 
 const _titleIsUnique = body('title').custom(_titleIsUniqueFunction);
+const _optionalTitleIsUnique = body('title').optional().custom(_titleIsUniqueFunction);
 
 /**
  *  ------------------------------
@@ -44,10 +47,17 @@ const _statusValid = check('status','Status must be in progress or completed.').
  *  -----------------------
     Validaciones para expirationDate
     -----------------------
- */
-
+*/
 const _expirationDateRequired = check('expirationDate', 'ExpirationDate required.').not().isEmpty();
 const _expirationDateIsDate = check('expirationDate', 'ExpirationDate must be a date.').isDate();
+const _optionalExpirationDateIsDate = check('expirationDate', 'ExpirationDate must be a date.').optional().isDate();
+
+/**
+ *  -----------------------
+    Validaciones para id
+    -----------------------
+*/
+const _idIsMongo = check('id').optional().isMongoId().withMessage('ID does not exist in DB');
 
 /**
  *  ----------------------------------
@@ -71,6 +81,18 @@ export const postRequestValidations = [
     _titleIsString,
     _titleIsLength,
     _titleIsUnique,
+    _descriptionIsString,
+    _statusIsString,
+    _statusValid,
+    _optionalExpirationDateIsDate,
+    _validationResult
+];
+
+export const putRequestValidations = [
+    _idIsMongo,
+    _optionalTitleIsString,
+    _optionalTitleIsLength,
+    _optionalTitleIsUnique,
     _descriptionIsString,
     _statusIsString,
     _statusValid,

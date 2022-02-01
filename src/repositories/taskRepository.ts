@@ -8,8 +8,16 @@ class TaskRepository{
         return await Task.find();
     }
 
+    async getById(id:string){
+        return await Task.findById(id); 
+    }
+
     async save(task: TaskType){
         return await Task.create(task);
+    }
+
+    async update(id:string, bodyTask:TaskType){
+        return await Task.findByIdAndUpdate(id,bodyTask,{new:true});
     }
 
     async getTitle (title: FilterQuery<TaskType> | undefined){
