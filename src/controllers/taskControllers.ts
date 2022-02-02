@@ -52,7 +52,7 @@ export const deleteTask: RequestHandler = async(request: Request, response: Resp
     try {
         const {id}  = request.params;
         await taskService.deleteTask(id);
-        response.json({message : `User with id: ${id} deleted.`});
+        response.json({message : `Task with id: ${id} deleted.`});
     } catch (error) {
         next(error);
     }

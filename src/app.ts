@@ -7,6 +7,7 @@ import logger from './utils/logger';
 import config from './utils/config';
 import mongoose from 'mongoose';
 import {errorHandler } from './utils/appError';
+import userRouter from './routes/userRouter';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(morgan('tiny'));
 
 app.use('/api',pruebaRouter);
+app.use('/users',userRouter);
 app.use('/tasks',taskRouter);
 
 app.use(errorHandler);
