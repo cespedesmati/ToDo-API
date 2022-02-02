@@ -8,6 +8,7 @@ import config from './utils/config';
 import mongoose from 'mongoose';
 import {errorHandler } from './utils/appError';
 import userRouter from './routes/userRouter';
+import loginRouter from './routes/loginRouter';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(morgan('tiny'));
 
 app.use('/api',pruebaRouter);
+app.use('/login',loginRouter);
 app.use('/users',userRouter);
 app.use('/tasks',taskRouter);
 

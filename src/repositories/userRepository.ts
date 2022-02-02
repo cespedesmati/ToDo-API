@@ -21,6 +21,10 @@ class UserRepository{
     async delete(id: string){
         return await User.findByIdAndRemove(id);
     }
+
+    async getByEmail(email: string){
+        return await User.findOne({email:email});
+    }
 }
 
 export default UserRepository;
