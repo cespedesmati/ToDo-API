@@ -40,6 +40,17 @@ export const createUser : RequestHandler = async(request: Request, response: Res
 
 };
 
+export const updateUser: RequestHandler = async(request: Request, response: Response, next: NextFunction) =>{
+    try {
+        const {id}  = request.params;
+        const bodyUser = <UserType>request.body;
+        const updateUser = await userService.updateUser(id,bodyUser);
+        response.send(updateUser);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 export const deleteUser: RequestHandler = async(request: Request, response: Response, next: NextFunction) => {
     try {

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, deleteUser, getUserById, getUsers } from "../controllers/userController";
+import { createUser, deleteUser, getUserById, getUsers, updateUser } from "../controllers/userController";
 
 const userRouter = Router();
 
@@ -10,8 +10,13 @@ userRouter.get('/:id',getUserById);
 //POST
 userRouter.post('/',createUser);
 
+//PUT
+userRouter.put('/:id',updateUser);
+
 //DELETE
 userRouter.delete('/:id',deleteUser);
+
+
 
 
 export default userRouter;

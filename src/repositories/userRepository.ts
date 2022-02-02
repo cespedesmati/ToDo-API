@@ -14,6 +14,10 @@ class UserRepository{
         return await User.create(user); 
     }
 
+    async update(id:string,bodyUser:UserType){
+        return await User.findByIdAndUpdate(id,bodyUser,{new:true}).select({"email":1});
+    }
+
     async delete(id: string){
         return await User.findByIdAndRemove(id);
     }

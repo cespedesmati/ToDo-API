@@ -20,6 +20,14 @@ class UserService{
         return await userRepository.save(user);
     }
 
+    async updateUser(id:string, bodyUser:UserType){
+        if(bodyUser.password){
+            const pass = await bcrypt.hash(bodyUser.password,saltRounds);
+            bodyUser.password = pass;
+        }
+        return await userRepository.update(id,bodyUser);
+    }
+
     async deleteUser(id: string){
         return await userRepository.delete(id);
     }
