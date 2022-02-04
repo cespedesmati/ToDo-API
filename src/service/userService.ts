@@ -11,6 +11,10 @@ class UserService{
         return userRepository.getAll();
     }
 
+    async findAllByTasks(){
+        return userRepository.getAllByTasks();
+    }
+
     async findById(id:string){
         return await userRepository.getById(id);
     }

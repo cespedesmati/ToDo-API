@@ -9,6 +9,10 @@ class UserRepository{
         return await User.find({}).select({"email":1});
     }
 
+    async getAllByTasks(){
+        return await User.find({}).populate('tasks',{title:1});
+    }
+
     async getById(id:string){
         return await User.findById(id).select({"email":1}); 
     }

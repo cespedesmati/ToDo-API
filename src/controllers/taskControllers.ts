@@ -13,6 +13,15 @@ export const getTasks: RequestHandler = async (request: Request, response: Respo
     }
 };
 
+export const getTasksUsers : RequestHandler = async(request:Request, response:Response, next:NextFunction) => {
+    try {
+        const tasksDetail = await taskService.findAllByUser();
+        response.json(tasksDetail);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const getTaskById: RequestHandler = async(request: Request, response: Response, next: NextFunction) => {
     try {
         const {id}  = request.params;

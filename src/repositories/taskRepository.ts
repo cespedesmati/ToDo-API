@@ -8,6 +8,10 @@ class TaskRepository{
         return await Task.find();
     }
 
+    async getAllByUser(){
+        return await Task.find({}).populate('user',{email:1});
+    }
+
     async getById(id:string){
         return await Task.findById(id); 
     }

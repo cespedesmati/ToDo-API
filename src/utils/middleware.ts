@@ -9,8 +9,6 @@ export interface RequestCustom extends Request{
     user: ObjectId;
 }
 
-
-
 export const validJWT = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const token = request.headers.authorization;
