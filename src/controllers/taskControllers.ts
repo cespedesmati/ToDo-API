@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { TaskType } from '../model/tasksModel';
 import TaskService from "../service/taskService";
+import { RequestCustom } from '../utils/middleware';
 const taskService = new TaskService();
 
 export const getTasks: RequestHandler = async (request: Request, response: Response, next: NextFunction) => {
@@ -30,6 +31,8 @@ export const getTaskById: RequestHandler = async(request: Request, response: Res
 export const createTask: RequestHandler = async(request: Request, response: Response, next: NextFunction) => {
     try {
         const bodyTask = <TaskType>request.body ;
+        const req = request as RequestCustom;
+        bodyTask.user = req.user;
         const savedTask = await taskService.saveTask(bodyTask) as TaskType;
         response.send(savedTask);
     } catch (error) {

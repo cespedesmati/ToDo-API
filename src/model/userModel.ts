@@ -4,7 +4,7 @@ import uniqueValidator from 'mongoose-unique-validator';
 export interface UserType extends mongoose.Document{
     email:string,
     password:string,
-    task:mongoose.Schema.Types.ObjectId[]
+    tasks:mongoose.Schema.Types.ObjectId[]
 }
 
 const userSchema = new mongoose.Schema({
@@ -18,10 +18,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         minlength: 8
     },
-    tasks: {
+    tasks: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Task'
-    }
+        ref: 'Task',
+        default: []
+    }]
 });
 
 

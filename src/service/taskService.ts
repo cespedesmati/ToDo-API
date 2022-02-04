@@ -1,7 +1,10 @@
+
 import TaskRepository from "../repositories/taskRepository";
 const taskRepository = new TaskRepository();
 import { TaskType } from "../model/tasksModel";
-import { FilterQuery } from "mongoose";
+import { FilterQuery, ObjectId } from "mongoose";
+import UserService from "./userService";
+const userService = new UserService();
 
 class TaskService{
 
@@ -14,7 +17,12 @@ class TaskService{
     }
 
     async saveTask(task: TaskType){
-        return await taskRepository.save(task);
+        const savedTask = await taskRepository.save(task);
+        const user = await userService.findById(String(task.user));
+        if(user){
+            await userService.updateUserForTask(<ObjectId>user.id,<ObjectId>savedTask._id);
+        }
+        return savedTask;
     }
 
     async updateTask(id:string, bodyTask:TaskType){
@@ -28,8 +36,6 @@ class TaskService{
     async findTitle(title : FilterQuery<TaskType> | undefined){
         return await taskRepository.getTitle(title);
     }
-
- 
 }
 
 

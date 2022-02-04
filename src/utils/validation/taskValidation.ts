@@ -1,6 +1,7 @@
 import {body,check,CustomValidator,validationResult} from 'express-validator';
 import { Request, Response, NextFunction} from 'express';
 import { AppError} from '../appError';
+import { validJWT } from '../middleware';
 import TaskService from '../../service/taskService';
 const taskService = new TaskService();
 
@@ -84,12 +85,14 @@ const _validationResult = (request: Request, response: Response, next: NextFunct
     
 
 export const getRequestValidations = [    
+    validJWT,
     _idIsMongo,
     _validationResult
 ];
 
 
 export const postRequestValidations = [
+    validJWT,
     _titleRequired,
     _titleIsString,
     _titleIsLength,

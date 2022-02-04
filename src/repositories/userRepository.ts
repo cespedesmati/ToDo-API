@@ -1,4 +1,7 @@
+
+import { ObjectId } from "mongoose";
 import User, { UserType } from "../model/userModel";
+
 
 class UserRepository{
 
@@ -16,6 +19,10 @@ class UserRepository{
 
     async update(id:string,bodyUser:UserType){
         return await User.findByIdAndUpdate(id,bodyUser,{new:true}).select({"email":1});
+    }
+
+    async updateForTask(id:ObjectId,idTask:ObjectId){
+        return await User.findByIdAndUpdate(id,{ $push:{ tasks: idTask} } );
     }
 
     async delete(id: string){

@@ -1,14 +1,17 @@
-import UserRepository from "../repositories/userRepository";
+
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserType } from '../model/userModel';
 import config from "../utils/config";
-const userRepository = new UserRepository();
+import { AppError } from '../utils/appError';
+
+import UserService from "./userService";
+const userService = new UserService();
 
 class LoginService{
 
     async loginAccess(userBody: UserType){
-        const user = await userRepository.getByEmail(userBody.email);
+        const user = await userService.findByEmail(userBody.email);
 
         const isPassword = (user === null)
             ? false
@@ -25,7 +28,35 @@ class LoginService{
             email:user?.email
         };
     }
+
+
+    async validToken(token:string){
+
+        if(!token){
+            throw new AppError('Token required',401,'');
+        }
+
+        let idUser: string;
+        try {
+            const decodedToken = jwt.verify(token,config.auth.secret) as IDecodedToken;
+            idUser = decodedToken.id ;
+        } catch (error) {
+            throw new AppError('Invalid token!', 401, String(error));
+        }
+        const user = await userService.findById(idUser);
+
+        if(!user){
+            throw new AppError('Invalid token', 401, 'User not found.');
+        }
+
+        return user;
+    }
 }
 
+interface IDecodedToken {
+    id:string,
+    iat:number,
+    exp:number
+}
 
 export default LoginService;

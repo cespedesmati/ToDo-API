@@ -2,6 +2,7 @@ import { UserType } from "../model/userModel";
 import * as bcrypt from 'bcrypt';
 const saltRounds = 10;
 import UserRepository from "../repositories/userRepository";
+import { ObjectId } from "mongoose";
 const userRepository = new UserRepository();
 
 class UserService{
@@ -26,6 +27,10 @@ class UserService{
             bodyUser.password = pass;
         }
         return await userRepository.update(id,bodyUser);
+    }
+
+    async updateUserForTask(id:ObjectId, idTask:ObjectId){ 
+        return await userRepository.updateForTask(id,idTask);
     }
 
     async deleteUser(id: string){

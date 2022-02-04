@@ -13,4 +13,3 @@ export default {
         ttl: process.env.AUTH_TTL
     }
 };
-
