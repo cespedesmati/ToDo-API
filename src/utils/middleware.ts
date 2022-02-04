@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { ObjectId } from 'mongoose';
 import LoginService from '../service/loginService';
+import { AppError} from './appError';
+import {validationResult} from 'express-validator';
 const loginService = new LoginService();
 
 export interface RequestCustom extends Request{
@@ -21,3 +23,16 @@ export const validJWT = async (request: Request, response: Response, next: NextF
     }
 };
 
+/**
+ *  ----------------------------------
+    Handler para errores de validacion
+    ----------------------------------
+*/
+export const _validationResult = (request: Request, response: Response, next: NextFunction) => {
+    const error = validationResult(request);
+    if(!error.isEmpty()){
+        const err = new AppError('Validation Errors.', 400, String(error.array()[0].msg));
+        next(err);
+    }
+    next();
+};

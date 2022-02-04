@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import {getTasks,createTask, getTaskById, updateTask, deleteTask} from '../controllers/taskControllers';
 import { deleteRequestValidations, getRequestValidations, postRequestValidations, putRequestValidations } from '../utils/validation/taskValidation';
-
 const taskRouter = Router();
 
 //GET

@@ -9,10 +9,7 @@ export interface UserType extends mongoose.Document{
 
 const userSchema = new mongoose.Schema({
     email: {
-        type: String,
-        required: [true,'Email required.'],
-        unique: true,
-        minlength: 12
+        type: String
     },
     password: {
         type: String,

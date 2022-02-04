@@ -1,7 +1,6 @@
-import {body,check,CustomValidator,validationResult} from 'express-validator';
-import { Request, Response, NextFunction} from 'express';
-import { AppError} from '../appError';
+import {body,check,CustomValidator} from 'express-validator';
 import { validJWT } from '../middleware';
+import { _validationResult } from '../middleware';
 import TaskService from '../../service/taskService';
 const taskService = new TaskService();
 
@@ -69,19 +68,6 @@ const _idIsMongo = check('id').optional().isMongoId().withMessage('ID does not e
 
 // const _idExist = body('id').optional().custom(idExistFunction);
 
-/**
- *  ----------------------------------
-    Handler para errores de validacion
-    ----------------------------------
-*/
-const _validationResult = (request: Request, response: Response, next: NextFunction) => {
-    const error = validationResult(request);
-    if(!error.isEmpty()){
-        const err = new AppError('Validation Errors.', 400, String(error.array()[0].msg));
-        next(err);
-    }
-    next();
-};
     
 
 export const getRequestValidations = [    
