@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { TaskType } from '../model/tasksModel';
 import TaskService from "../service/taskService";
 import { RequestCustom } from '../utils/middleware';
+import { AppError } from '../utils/appError';
 const taskService = new TaskService();
 
 export const getTasks: RequestHandler = async (request: Request, response: Response, next: NextFunction) => {
@@ -29,7 +30,7 @@ export const getTaskById: RequestHandler = async(request: Request, response: Res
         if (task != null){
             response.json(task);
         }else{
-            throw new Error('ID does not exist in DB');
+            throw new AppError('Id does not exist in DB',404);
         } 
     }catch (error) {
         next(error);

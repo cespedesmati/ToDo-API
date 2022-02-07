@@ -5,8 +5,8 @@ import loggerInstance from "./logger";
 
 export class AppError extends Error {
     public code: number;
-    public data: string;
-    constructor(message: string | undefined,code : number, data: string){
+    public data?: string;
+    constructor(message: string | undefined,code : number, data?: string){
         super(message);
         this.code = code;
         this.data = data;
