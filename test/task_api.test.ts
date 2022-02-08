@@ -1,17 +1,12 @@
 import supertest from "supertest";
 import mongoose from "mongoose";
 import app from '../src/app';
-import Task from "../src/model/tasksModel";
-import { initialTasks, nonExistingId, taskDB } from './test.helper';
+import { initialDatabase, initialTasks, nonExistingId, taskDB, adminId} from './test.helper';
 import { TaskType } from '../src/model/tasksModel';
 const api = supertest(app);
 
 beforeEach(async() => {
-    await Task.deleteMany({});
-
-    const taskObjects = initialTasks.map(task => new Task(task));
-    const promiseArray = taskObjects.map(task => task.save());
-    await Promise.all(promiseArray);
+    await initialDatabase();
 });
 
 describe('Getting the tasks ',() => {
@@ -31,7 +26,7 @@ describe('Getting the tasks ',() => {
     test('a specific task is within the returned tasks', async() => {
         const response = await api.get('/tasks');
         const arrayTasks = response.body as TaskType[];
-        const content = arrayTasks.map(task => task.title) ;
+        const content = arrayTasks.map(task => task.title);
         expect(content).toContain(
             'Llevar el auto a lavar'
         );
@@ -82,6 +77,29 @@ describe('Getting tasks with specific id',() => {
     });
 });
 
+describe('Getting tasks with user details',() => {
+
+    test('tasks with user are returned as json with status 200', async () => {
+        interface IUser{
+            _id:string,
+            email:string
+        }
+        const token = await generateToken();
+
+        const result = await api
+            .get('/tasks/detail')
+            .set('Authorization', token)
+            .expect(200)
+            .expect('Content-Type','application/json; charset=utf-8');
+
+        const arrayTasks = result.body as TaskType[];
+        const contentUsers = arrayTasks.map(task => task.user) as unknown as IUser[];
+        const contentId = contentUsers.map(user => user._id);
+        const userId = await adminId();
+
+        expect(contentId).toContain(userId);      
+    });
+});
 
 describe('Deletion of a task', () => {
     
@@ -103,7 +121,7 @@ describe('Deletion of a task', () => {
         expect(titles).not.toContain(taskToDelete.title);
     });
     
-    test('fail with statuscode 404 if note does not exist', async() => {
+    test('delete fails with statuscode 404 if note does not exist', async() => {
         const token = await generateToken();
         const validNonExistingId = await nonExistingId();
         
@@ -113,7 +131,7 @@ describe('Deletion of a task', () => {
         .expect(404);
     });
     
-    test('fail with statuscode 400 if id is invalid', async() =>{
+    test('delete fails with statuscode 400 if id is invalid', async() =>{
         const token = await generateToken();
         const invalidID = 123456789;
         await api
@@ -201,7 +219,7 @@ describe('Update of a new task',() => {
         expect(descriptions).not.toContain(taskToUpdate.description);
     });
 
-    test('fails with status code 400 if data invaild', async () => {
+    test('update fails with status code 400 if data invaild', async () => {
 
         const token = await generateToken();
         const taskInDbStart = await taskDB();
@@ -218,7 +236,27 @@ describe('Update of a new task',() => {
             .expect(400);
     });
 
-    //para id valida e invalida
+    test('update fail with statuscode 404 if note does not exist', async() => {
+        const token = await generateToken();
+        const validNonExistingId = await nonExistingId();
+        
+        await api
+        .put(`/tasks/${validNonExistingId}`)
+        .set('Authorization', token)
+        .send({title:"titulo de prueba."})
+        .expect(404);
+    });
+    
+    test('update fail with statuscode 400 if id is invalid', async() =>{
+        const token = await generateToken();
+        const invalidID = 123456789;
+        await api
+        .put(`/tasks/${invalidID}`)
+        .set('Authorization', token)
+        .send({title:"titulo de prueba."})
+        .expect(400);
+        
+    });
     
 });
 
@@ -235,8 +273,8 @@ interface Itoken {
 
 async function generateToken(){
     const user = {
-        "email":"matute@gmail.com",
-        "password":"contrajwt"
+        "email":"admin@gmail.com",
+        "password":"password12356"
     };
     const response = await api.post('/login').send(user);
     const {token} = <Itoken>response.body;
