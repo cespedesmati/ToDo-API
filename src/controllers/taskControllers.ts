@@ -55,7 +55,11 @@ export const updateTask: RequestHandler = async(request: Request, response: Resp
         const {id}  = request.params;
         const bodyTask = <TaskType>request.body;
         const updateTask = await taskService.updateTask(id,bodyTask);
-        response.send(updateTask);
+        if (updateTask != null){ //probar test sin if else, si es formato mongo el id pasa, return null
+            response.send(updateTask);
+        }else{
+            throw new AppError('Id does not exist in DB',404);
+        } 
     } catch (error) {
         next(error);
     }
@@ -64,8 +68,12 @@ export const updateTask: RequestHandler = async(request: Request, response: Resp
 export const deleteTask: RequestHandler = async(request: Request, response: Response, next: NextFunction) => {
     try {
         const {id}  = request.params;
-        await taskService.deleteTask(id);
-        response.json({message : `Task with id: ${id} deleted.`});
+        const deletedTask = await taskService.deleteTask(id);
+        if (deletedTask != null){
+            response.json({message : `Task with id: ${id} deleted.`});
+        }else{
+            throw new AppError('Id does not exist in DB',404);
+        } 
     } catch (error) {
         next(error);
     }

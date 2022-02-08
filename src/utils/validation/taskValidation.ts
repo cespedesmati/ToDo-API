@@ -49,6 +49,7 @@ const _statusValid = check('status','Status must be in progress or completed.').
     -----------------------
 */
 const _expirationDateRequired = check('expirationDate', 'ExpirationDate required.').not().isEmpty();
+const _optionalExpirationDateRequired = check('expirationDate', 'ExpirationDate required.').optional().not().isEmpty();
 const _expirationDateIsDate = check('expirationDate', 'ExpirationDate must be a date.').isDate();
 const _optionalExpirationDateIsDate = check('expirationDate', 'ExpirationDate must be a date.').optional().isDate();
 
@@ -86,7 +87,8 @@ export const postRequestValidations = [
     _descriptionIsString,
     _statusIsString,
     _statusValid,
-    _optionalExpirationDateIsDate,
+    _expirationDateRequired,
+    _expirationDateIsDate,
     _validationResult
 ];
 
@@ -98,8 +100,8 @@ export const putRequestValidations = [
     _descriptionIsString,
     _statusIsString,
     _statusValid,
-    _expirationDateRequired,
-    _expirationDateIsDate,
+    _optionalExpirationDateRequired,
+    _optionalExpirationDateIsDate,
     _validationResult
 ];
 

@@ -33,7 +33,7 @@ class LoginService{
     async validToken(token:string){
 
         if(!token){
-            throw new AppError('Token required',401,'');
+            throw new AppError('Token required',401,'Unauthorized.');
         }
 
         let idUser: string;
