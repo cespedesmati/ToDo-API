@@ -193,7 +193,7 @@ describe('Addition of a new task',() => {
     });
 });
 
-describe('Update of a new task',() => {
+describe('Update of a task',() => {
     test('succeeds update with valid data', async () => {
         
         const token = await generateToken();
@@ -271,7 +271,7 @@ interface Itoken {
     email:string
 }
 
-async function generateToken(){
+export async function generateToken(){
     const user = {
         "email":"admin@gmail.com",
         "password":"password12356"

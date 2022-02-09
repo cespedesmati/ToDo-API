@@ -17,6 +17,13 @@ export const initialTasks = [
     }
 ];
 
+export const initialUsers = [
+    {
+        email: 'admin@gmail.com',
+        password:'password12356'
+    }
+];
+
 export async function  initialDatabase(){
     await User.deleteMany({});
     await Task.deleteMany({});
@@ -42,6 +49,11 @@ export const taskDB = async() => {
     return tasks.map(task => task.toJSON());
 };
 
+export const userDB = async() => {
+    const users = await User.find({}).select({"email":1});
+    return users.map(user => user.toJSON());
+};
+
 export const adminId = async() => {
     const user = await User.find({}).select({"id":1});
     const id = String(user[0]._id);
@@ -53,5 +65,12 @@ export const nonExistingId = async() => {
     await task.save();
     await task.remove();
     return String(task._id);
+};
+
+export const nonExistingIdUser = async() => {
+    const user = new User({email:'pruebaUser@gmail.com',password:'contrasenaPrueba'});
+    await user.save();
+    await user.remove();
+    return String(user._id);
 };
 

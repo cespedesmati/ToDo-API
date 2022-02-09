@@ -67,6 +67,7 @@ export const userPostRequestValidations = [
 
 export const userPutRequestValidations = [
     validJWT,
+    _idIsMongo,
     _optionalEmailIsString,
     _optionalEmailIsEmail,
     _optionalEmailIsUnique,

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { UserType } from '../model/userModel';
 import UserService from '../service/userService';
+import { AppError } from '../utils/appError';
 const userService = new UserService();
 
 
@@ -29,7 +30,7 @@ export const getUserById: RequestHandler = async(request: Request, response: Res
         if (user != null){
             response.json(user);
         }else{
-            throw new Error('ID does not exist in DB');
+            throw new AppError('Id does not exist in DB',404);
         } 
     }catch (error) {
         next(error);
@@ -54,7 +55,11 @@ export const updateUser: RequestHandler = async(request: Request, response: Resp
         const {id}  = request.params;
         const bodyUser = <UserType>request.body;
         const updateUser = await userService.updateUser(id,bodyUser);
-        response.send(updateUser);
+        if (updateUser != null){ //probar test sin if else, si es formato mongo el id pasa, return null
+            response.send(updateUser);
+        }else{
+            throw new AppError('Id does not exist in DB',404);
+        } 
     } catch (error) {
         next(error);
     }
@@ -64,8 +69,12 @@ export const updateUser: RequestHandler = async(request: Request, response: Resp
 export const deleteUser: RequestHandler = async(request: Request, response: Response, next: NextFunction) => {
     try {
         const {id}  = request.params;
-        await userService.deleteUser(id);
-        response.json({message : `User with id: ${id} deleted.`});
+        const deletedUser = await userService.deleteUser(id);
+        if(deletedUser != null){
+            response.json({message : `User with id: ${id} deleted.`});
+        }else{
+            throw new AppError('Id does not exist in DB',404);
+        }
     } catch (error) {
         next(error);
     }

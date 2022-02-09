@@ -93,6 +93,7 @@ export const postRequestValidations = [
 ];
 
 export const putRequestValidations = [
+    validJWT,
     _idIsMongo,
     _optionalTitleIsString,
     _optionalTitleIsLength,
@@ -106,6 +107,7 @@ export const putRequestValidations = [
 ];
 
 export const deleteRequestValidations = [
+    validJWT,
     _idIsMongo,
     _validationResult
 ];
