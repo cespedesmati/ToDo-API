@@ -81,3 +81,12 @@ export const userDeleteRequestValidations = [
     _idIsMongo,
     _validationResult
 ];
+
+export const loginReQuestValidations = [
+    _emailRequired,
+    _emailIsString,
+    _emailIsEmail,
+    _passwordRequired,
+    _passwordIsString,
+    _validationResult
+];

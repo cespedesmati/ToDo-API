@@ -18,7 +18,7 @@ class LoginService{
             : await bcrypt.compare(userBody.password,user.password);
 
         if(!user || !isPassword){
-            throw new Error('Authentification failed!, invalid email or password');
+            throw new AppError('Authentification failed!, invalid email or password',401);
         }
 
         const id = user?._id as string;
