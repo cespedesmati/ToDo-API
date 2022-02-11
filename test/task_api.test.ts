@@ -2,7 +2,8 @@ import supertest from "supertest";
 import mongoose from "mongoose";
 import app from '../src/app';
 import { initialDatabase, initialTasks, nonExistingId, taskDB, adminId} from './test.helper';
-import { TaskType } from '../src/model/tasksModel';
+import  { TaskType } from '../src/model/tasksModel';
+
 const api = supertest(app);
 
 beforeEach(async() => {
@@ -143,14 +144,14 @@ describe('Deletion of a task', () => {
 });
 
 describe('Addition of a new task',() => {
-    test('succeeds with valid data', async () => {
+    test('add task succeeds with valid data', async () => {
         
         const token = await generateToken();
         const newTask = {
             title:"Terminar de testear la api.",
             description:"Probando crear una task con test en jest",
-            expirationDate:'2022-02-10',
-            user: "61fc89c0c81cea97e75195ad"
+            expirationDate:'2022-02-10'
+            //user: "61fc89c0c81cea97e75195ad"
         };
 
         await api
@@ -159,6 +160,7 @@ describe('Addition of a new task',() => {
             .send(newTask)
             .expect(200)
             .expect('Content-Type','application/json; charset=utf-8');
+
     });
 
     test('fails with status 400 if required fields are not completed ', async () => {
@@ -271,6 +273,23 @@ interface Itoken {
     email:string
 }
 
+
+export async function addTask(titleName:string) {
+    
+    const token = await generateToken();
+    const newTask = {
+        title:titleName,
+        description:"Probando crear una task con test en jest",
+        expirationDate:'2022-02-20'
+    };
+    
+    const resultTask = await api
+    .post('/tasks')
+    .set('Authorization', token)
+    .send(newTask);
+    
+    return resultTask;
+}
 export async function generateToken(){
     const user = {
         "email":"admin@gmail.com",

@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 import app from '../src/app';
 import { adminId, initialDatabase, initialUsers, nonExistingIdUser, userDB } from './test.helper';
 import { UserType } from "../src/model/userModel";
-import { generateToken } from "./task_api.test";
+import { addTask, generateToken } from "./task_api.test";
 import * as bcrypt from 'bcrypt';
+import { TaskType } from '../src/model/tasksModel';
 
 
 const api = supertest(app);
@@ -37,6 +38,37 @@ describe('Getting the users',() => {
 
     });
 });
+
+describe('Getting user with task details', () => {
+    test('user with task detail are returned as json with status code 200', async () => {
+        interface ITask{
+            _id:string,
+            title?:string
+        }
+        const addNewTask = await addTask("agregando tarea numero 1 ");
+        await addTask("agregando tarea numero 12");
+        await addTask("agregando tarea numero 123");
+        const pruebaTaskBody = addNewTask.body as TaskType; 
+        const token = await generateToken();
+
+        const result = await api
+            .get('/users/detail')
+            .set('Authorization', token)
+            .expect(200)
+            .expect('Content-Type','application/json; charset=utf-8');
+
+        const arrayUser = result.body as UserType[];
+        const contentTask = arrayUser.map(user => user.tasks) ;
+        const prueba = contentTask[0] as unknown as ITask[];   
+        const arrayIds = prueba.map(function(item) {
+            return item._id;
+        });
+
+        expect(arrayIds).toContain(pruebaTaskBody._id); 
+  
+    });
+});
+
 
 describe('Getting users with specific id', () => {
     test('succes with a valid user id', async() => {
