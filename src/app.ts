@@ -13,8 +13,8 @@ import loginRouter from './routes/loginRouter';
 const app = express();
 
 logger.info(`connecting to${String(config.MONGODB_URI)}`);
-
-mongoose.connect(String(config.MONGODB_URI))
+//mongoose.connect(String(config.MONGODB_URI))
+mongoose.connect(String(process.env.MONGODB_URI))
     .then(() => {
         logger.info('connected to MongoDB');
     })

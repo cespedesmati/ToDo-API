@@ -58,11 +58,19 @@ describe('Getting user with task details', () => {
             .expect('Content-Type','application/json; charset=utf-8');
 
         const arrayUser = result.body as UserType[];
-        const contentTask = arrayUser.map(user => user.tasks) ;
-        const prueba = contentTask[0] as unknown as ITask[];   
-        const arrayIds = prueba.map(function(item) {
-            return item._id;
-        });
+        // const contentTask = arrayUser.map(user => user.tasks) ;
+        // const prueba = contentTask[0] as unknown as ITask[];   
+        // const arrayIds = prueba.map(function(item) {
+        //     return item._id;
+        // });
+
+        const arrayIds = arrayUser
+            .map(user => user.tasks)
+            .reduce((acc, task) => acc.concat(task), [])
+            .map(function(taskObj){
+                const task = taskObj as unknown as ITask;
+                return task._id;
+            });
 
         expect(arrayIds).toContain(pruebaTaskBody._id); 
   

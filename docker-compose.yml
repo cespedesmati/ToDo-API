@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  node-orm:
+    container_name: toDoApi
+    build: .
+    ports:
+      - "3000:3000"    
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - node_db      
+  node_db:
+    container_name: mongodb
+    image: mvertes/alpine-mongo 
+    ports:
+      - "27017:27017"
+    volumes:
+      - /var/local/mongo_db:/data/db
+    environment:
+      MONGODB_URI: "${MONGODB_URI}"
