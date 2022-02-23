@@ -53,6 +53,12 @@ export const userGetRequestValidations = [
 
 ];
 
+export const userGetRequestValidationsTasks = [    
+    validJWT,
+    _validationResult
+
+];
+
 
 export const userPostRequestValidations = [
     validJWT,

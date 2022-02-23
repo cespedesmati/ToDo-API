@@ -11,7 +11,10 @@ export interface RequestCustom extends Request{
 
 export const validJWT = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const token = request.headers.authorization;
+        let token = request.headers.authorization;
+        if (token?.substring(0,6) === 'Bearer'){
+           token = token.substring(7); 
+        }
         const user = await loginService.validToken(<string>token);
         const req = request as RequestCustom;
         req.user = user._id as ObjectId;
