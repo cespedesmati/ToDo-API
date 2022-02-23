@@ -10,7 +10,7 @@ class UserRepository{
     }
 
     async getAllByTasks(){
-        return await User.find({}).populate('tasks',{title:1});
+        return await User.find({}).select({"password":0, "__v":0}).populate('tasks',{title:1});
     }
 
     async getById(id:string){
