@@ -65,7 +65,7 @@ userRouter.get('/detail', userGetRequestValidationsTasks, getUsersTasks);
  *      summary: get user with specific id.
  *      tags: [Users]
  *      parameters:
- *          - $ref: '#/components/parameters/taskId'
+ *          - $ref: '#/components/parameters/Id'
  *      responses:
  *          200:
  *              description: users with specific id are obtained.
@@ -125,7 +125,7 @@ userRouter.post('/',userPostRequestValidations,createUser);
  *      description: 
  *      tags: [Users]
  *      parameters:
- *          - $ref: '#/components/parameters/taskId'
+ *          - $ref: '#/components/parameters/Id'
  *      requestBody:
  *          required: true
  *          content:
@@ -158,7 +158,7 @@ userRouter.put('/:id',userPutRequestValidations,updateUser);
  *      summary: get an id and delete user.
  *      tags: [Users]
  *      parameters:
- *          - $ref: '#/components/parameters/taskId'
+ *          - $ref: '#/components/parameters/Id'
  *      responses:
  *          200:
  *              description: user found and successful delete.
@@ -210,7 +210,7 @@ userRouter.delete('/:id',userDeleteRequestValidations,deleteUser);
  *          schema:
  *              type: string
  *          required: true
- *      taskId:
+ *      Id:
  *          in: path
  *          name: id
  *          required: true
